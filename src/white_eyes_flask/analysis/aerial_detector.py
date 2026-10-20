@@ -1,5 +1,3 @@
-"""FNC-S-003 VisDrone 사람 탐지기"""
-
 import threading
 from pathlib import Path
 from typing import Any
@@ -8,7 +6,7 @@ import numpy as np
 from ultralytics import YOLO
 
 from white_eyes_flask.analysis.boxes import (
-    DEFAULT_DEDUPE_OVERLAP,
+    DEDUPE_OVERLAP,
     dedupe_boxes,
     sanitize_boxes,
 )
@@ -30,7 +28,7 @@ class VisDroneDetector:
         model: Any,
         imgsz: int,
         conf_thres: float,
-        dedupe_overlap: float = DEFAULT_DEDUPE_OVERLAP,
+        dedupe_overlap: float = DEDUPE_OVERLAP,
     ) -> None:
         self._model = model
         self._imgsz = imgsz
@@ -45,7 +43,7 @@ class VisDroneDetector:
         weights: str,
         imgsz: int,
         conf_thres: float,
-        dedupe_overlap: float = DEFAULT_DEDUPE_OVERLAP,
+        dedupe_overlap: float = DEDUPE_OVERLAP,
     ) -> "VisDroneDetector":
         """가중치 파일에서 불러온다. 신뢰하는 출처의 파일만 쓴다(파일 안의 코드가 실행될 수 있다)."""
         if not Path(weights).is_file():
