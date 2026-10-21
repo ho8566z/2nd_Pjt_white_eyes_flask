@@ -53,6 +53,7 @@ sha256sum weights/visdrone-yolov8m.pt   # Windows PowerShell: (Get-FileHash weig
 `.env`에는 `YOLO_WEIGHTS=./weights/visdrone-yolov8m.pt`처럼 적는다. 입력 크기는 `DETECT_IMGSZ`(기본 960), 같은 사람을 둘로 센 박스를 합치는 기준은 `DETECT_DEDUPE_OVERLAP`(기본 0=합치지 않음, 켜려면 0.25 정도)이다.
 
 ### 이전: YOLO-CROWD (`DETECTOR=yolo-crowd`)
+모델 가중치(`*.pt`)는 커밋하지 않는다(`weights/`는 `.gitignore`). `YOLO_WEIGHTS` 환경변수로 파일 경로를 준다.
 
 가중치 `yolo-crowd.pt`는 비공개 저장소 `white-eyes1/white-eyes-assets`의 Release `yolo-crowd-v1`에 있다(출처: https://github.com/zaki1003/YOLO-CROWD README의 Postweight). `gh`로 로그인한 뒤 받고, **받은 뒤 해시를 꼭 확인한다**(가중치는 pickle 형식이라 `torch.load(weights_only=False)`로 읽으므로 믿을 수 있는 파일만 쓴다).
 
@@ -63,6 +64,7 @@ sha256sum weights/yolo-crowd.pt      # Windows PowerShell: (Get-FileHash weights
 ```
 
 `.env`에는 `DETECTOR=yolo-crowd`와 `YOLO_WEIGHTS=./weights/yolo-crowd.pt`처럼 적는다. 위에서 내려다본 영상에서는 정수리만 보여 사람을 많이 놓친다(40명이 보이는 장면에서 2명).
+`.env`에는 `YOLO_WEIGHTS=./weights/yolo-crowd.pt`처럼 적는다.
 
 ## vendor/ 출처
 
