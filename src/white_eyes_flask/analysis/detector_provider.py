@@ -1,9 +1,11 @@
+"""FNC-S-003 탐지 모델을 처음 쓸 때 한 번만 불러오는 공급자"""
+
 import logging
 import threading
 from pathlib import Path
 
 from white_eyes_flask.analysis.aerial_detector import VisDroneDetector
-from white_eyes_flask.analysis.boxes import DEDUPE_OVERLAP
+from white_eyes_flask.analysis.boxes import DEFAULT_DEDUPE_OVERLAP
 from white_eyes_flask.analysis.detector import Detector, YoloCrowdDetector
 
 logger = logging.getLogger(__name__)
@@ -30,7 +32,7 @@ class LazyDetectorProvider:
         imgsz: int,
         conf_thres: float,
         kind: str = DETECTOR_VISDRONE,
-        dedupe_overlap: float = DEDUPE_OVERLAP,
+        dedupe_overlap: float = DEFAULT_DEDUPE_OVERLAP,
     ) -> None:
         if kind not in DETECTOR_KINDS:
             raise ValueError(
