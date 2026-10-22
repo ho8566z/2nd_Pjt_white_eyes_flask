@@ -92,7 +92,8 @@ class CameraService:
 
             # 작업이 없어진 것으로 본다: 이후 /live·/snapshot은 404, 보던 MJPEG 연결은 끝난다.
             self._streams.close(camera_id)
-            # 녹화 파일 마무리(FNC-S-008 4~6번)는 해당 이슈에서 채운다.
+            # 녹화 파일 마무리(FNC-S-008 4~6번)는 작업 스레드가 끝날 때 CameraJob이 한다.
+            # 공유 폴더로 옮기고 등록하는 재시도는 게시기 스레드가 맡아 이 정지를 막지 않는다.
             # 준비 취소(FNC-S-009)는 정지 플래그로 준비 루프가 스스로 멈추고 임시 파일을 지운다.
             # 전송 대기 중인 결과는 건드리지 않는다(전송 작업이 보냄).
             stopped = job.stop(STOP_WAIT_SEC)
@@ -131,6 +132,13 @@ class CameraService:
                 return True
             del self._stopping[camera_id]
             return False
+
+    def current_status(self, camera_id: int) -> CameraStatus | None:
+        """작업 스레드가 살아 있는 캠의 지금 상태. 작업이 없거나 끝났으면 None."""
+        job = self._get_job(camera_id)
+        if job is None or not job.is_alive():
+            return None
+        return job.status
 
     def job_count(self) -> int:
         with self._lock:
